@@ -1,8 +1,9 @@
 package com.tienda.ropa.backend.domain;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "pedidos")
@@ -22,6 +23,9 @@ public class Pedido {
     private Double total;
 
     private String estado;
+
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DetallePedido> detalles = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -61,5 +65,18 @@ public class Pedido {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public List<DetallePedido> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<DetallePedido> detalles) {
+        this.detalles = detalles;
+    }
+
+    public void addDetalle(DetallePedido detalle) {
+        detalles.add(detalle);
+        detalle.setPedido(this);
     }
 }

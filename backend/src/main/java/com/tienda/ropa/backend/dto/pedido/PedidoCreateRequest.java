@@ -1,30 +1,54 @@
 package com.tienda.ropa.backend.dto.pedido;
 
 import jakarta.validation.constraints.*;
+import java.util.List;
 
 public class PedidoCreateRequest {
 
-    @NotNull(message = "El usuario es obligatorio")
-    private Long usuarioId;
+    @NotNull(message = "El idUsuario es obligatorio")
+    private Long idUsuario;
 
-    @NotBlank(message = "El estado es obligatorio")
-    private String estado;
+    @NotEmpty(message = "La lista de productos no puede estar vacía")
+    private List<ProductoItemRequest> productos;
 
-    // GETTERS Y SETTERS
-
-    public Long getUsuarioId() {
-        return usuarioId;
+    public Long getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setUsuarioId(Long usuarioId) {
-        this.usuarioId = usuarioId;
+    public void setIdUsuario(Long idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
-    public String getEstado() {
-        return estado;
+    public List<ProductoItemRequest> getProductos() {
+        return productos;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setProductos(List<ProductoItemRequest> productos) {
+        this.productos = productos;
+    }
+
+    public static class ProductoItemRequest {
+        @NotNull(message = "El idProducto es obligatorio")
+        private Long idProducto;
+
+        @NotNull(message = "La cantidad es obligatoria")
+        @Min(value = 1, message = "La cantidad mínima es 1")
+        private Integer cantidad;
+
+        public Long getIdProducto() {
+            return idProducto;
+        }
+
+        public void setIdProducto(Long idProducto) {
+            this.idProducto = idProducto;
+        }
+
+        public Integer getCantidad() {
+            return cantidad;
+        }
+
+        public void setCantidad(Integer cantidad) {
+            this.cantidad = cantidad;
+        }
     }
 }
