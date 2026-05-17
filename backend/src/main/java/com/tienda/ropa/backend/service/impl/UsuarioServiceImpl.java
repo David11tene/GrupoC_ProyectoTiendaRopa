@@ -9,6 +9,7 @@ import com.tienda.ropa.backend.web.advice.ConflictException;
 import com.tienda.ropa.backend.web.advice.NotFoundException;
 
 import org.springframework.data.domain.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +18,11 @@ import java.util.List;
 public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository repo;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsuarioServiceImpl(UsuarioRepository repo) {
+    public UsuarioServiceImpl(UsuarioRepository repo, PasswordEncoder passwordEncoder) {
         this.repo = repo;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -33,7 +36,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         u.setNombre(request.getNombre());
         u.setCorreo(request.getCorreo());
-        u.setContrasena(request.getContrasena());
+        u.setContrasena(passwordEncoder.encode(request.getContrasena()));
         u.setRol(request.getRol());
         u.setActive(true);
 
@@ -92,7 +95,7 @@ public class UsuarioServiceImpl implements UsuarioService {
             u.setCorreo(request.getCorreo());
 
         if(request.getContrasena() != null)
-            u.setContrasena(request.getContrasena());
+            u.setContrasena(passwordEncoder.encode(request.getContrasena()));
 
         if(request.getRol() != null)
             u.setRol(request.getRol());

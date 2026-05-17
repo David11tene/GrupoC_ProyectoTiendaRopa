@@ -7,6 +7,7 @@ import Navbar from './components/Navbar';
 // Páginas Públicas
 import Home from './pages/Home';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import Cart from './pages/Cart';
 import MisPedidos from './pages/MisPedidos';
 
@@ -46,6 +47,7 @@ function AppRoutes() {
       {/* Rutas Públicas */}
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
       {/* Rutas que requieren login (solo para usuarios comunes, no ADMIN) */}
       <Route path="/cart" element={<UserRoute><Cart /></UserRoute>} />
