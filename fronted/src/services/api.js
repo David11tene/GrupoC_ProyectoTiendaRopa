@@ -18,7 +18,8 @@ const request = async (url, options = {}) => {
 export const api = {
   // Auth
   auth: {
-    login: (correo, contrasena) => request('/auth/login', { method: 'POST', body: JSON.stringify({ correo, contrasena }) }),
+    login: (nombre, contrasena) => request('/auth/login', { method: 'POST', body: JSON.stringify({ nombre, contrasena }) }),
+    register: (data) => request('/usuarios', { method: 'POST', body: JSON.stringify({ ...data, rol: 'USER' }) }),
   },
   // Productos
   productos: {
