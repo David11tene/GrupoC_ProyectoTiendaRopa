@@ -49,17 +49,25 @@ export default function Productos() {
 
   const handleEdit = (p) => {
     setEditingId(p.id);
+    // El backend devuelve "categoria" como nombre (string), buscamos el ID correspondiente
+    const cat = categorias.find(c => c.nombre === p.categoria);
     setForm({
       nombre: p.nombre,
       precio: p.precio,
       stock: p.stock,
-      idCategoria: p.categoriaId || p.categoria?.id || ''
+      idCategoria: cat ? cat.id : ''
     });
   };
 
-  const handleToggleEstado = async (id) => {
+  const handleToggleEstado = async (id, currentActive) => {
     try {
-      await api.productos.deactivate(id);
+      if (currentActive) {
+        // Desactivar: usa el endpoint PATCH /deactivate
+        await api.productos.deactivate(id);
+      } else {
+        // Reactivar: usa el endpoint PUT con active: true
+        await api.productos.update(id, { active: true });
+      }
       loadData();
     } catch (e) {
       alert("Error al cambiar el estado");
@@ -132,7 +140,7 @@ export default function Productos() {
                   <td>
                     <div className="action-buttons">
                       <button className="btn" style={{ padding: '0.25rem 0.5rem' }} onClick={() => handleEdit(p)}>Editar</button>
-                      <button className={`btn ${p.active ? 'btn-danger' : 'btn-outline'}`} style={{ padding: '0.25rem 0.5rem' }} onClick={() => handleToggleEstado(p.id)}>
+                      <button className={`btn ${p.active ? 'btn-danger' : 'btn-outline'}`} style={{ padding: '0.25rem 0.5rem' }} onClick={() => handleToggleEstado(p.id, p.active)}>
                         {p.active ? 'Desactivar' : 'Activar'}
                       </button>
                     </div>

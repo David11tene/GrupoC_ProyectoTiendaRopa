@@ -8,6 +8,12 @@ fronted/dist/
 # Logs
 *.log
 
-# OS
+# Vite cache
+.vite/
+fronted/.vite/
+
+# IDE & OS files
+.idea/
+.vscode/
 .DS_Store
 Thumbs.db

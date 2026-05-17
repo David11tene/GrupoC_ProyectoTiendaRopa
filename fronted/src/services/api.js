@@ -16,6 +16,10 @@ const request = async (url, options = {}) => {
 };
 
 export const api = {
+  // Auth
+  auth: {
+    login: (correo, contrasena) => request('/auth/login', { method: 'POST', body: JSON.stringify({ correo, contrasena }) }),
+  },
   // Productos
   productos: {
     getAll: () => request('/productos'),
@@ -45,5 +49,7 @@ export const api = {
     getAll: () => request('/pedidos'),
     getById: (id) => request(`/pedidos/${id}`),
     create: (data) => request('/pedidos', { method: 'POST', body: JSON.stringify(data) }),
+    updateEstado: (id, estado) => request(`/pedidos/${id}/estado`, { method: 'PATCH', body: JSON.stringify({ estado }) }),
   }
 };
+

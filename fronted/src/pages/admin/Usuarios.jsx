@@ -37,9 +37,13 @@ export default function Usuarios() {
     setForm({ nombre: u.nombre, correo: u.correo, contrasena: '', rol: u.rol || 'USER' });
   };
 
-  const handleToggleEstado = async (id) => {
+  const handleToggleEstado = async (id, currentActive) => {
     try {
-      await api.usuarios.deactivate(id);
+      if (currentActive) {
+        await api.usuarios.deactivate(id);
+      } else {
+        await api.usuarios.update(id, { active: true });
+      }
       loadUsuarios();
     } catch (e) {
       alert("Error al cambiar estado");
@@ -111,7 +115,7 @@ export default function Usuarios() {
                   <td>
                     <div className="action-buttons">
                       <button className="btn" style={{ padding: '0.25rem 0.5rem' }} onClick={() => handleEdit(u)}>Editar</button>
-                      <button className={`btn ${u.active ? 'btn-danger' : 'btn-outline'}`} style={{ padding: '0.25rem 0.5rem' }} onClick={() => handleToggleEstado(u.id)}>
+                      <button className={`btn ${u.active ? 'btn-danger' : 'btn-outline'}`} style={{ padding: '0.25rem 0.5rem' }} onClick={() => handleToggleEstado(u.id, u.active)}>
                         {u.active ? 'Desactivar' : 'Activar'}
                       </button>
                     </div>
