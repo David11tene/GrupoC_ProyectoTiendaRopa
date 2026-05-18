@@ -26,10 +26,12 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
-        String nombre = credentials.get("nombre");
-        String contrasena = credentials.get("contrasena");
+        String identifier = (credentials.get("nombre") != null) ? credentials.get("nombre").trim() : "";
+        String contrasena = (credentials.get("contrasena") != null) ? credentials.get("contrasena").trim() : "";
 
-        Optional<Usuario> optionalUsuario = usuarioRepository.findByNombre(nombre);
+        // Buscar por nombre o por correo
+        Optional<Usuario> optionalUsuario = usuarioRepository.findByNombre(identifier)
+                .or(() -> usuarioRepository.findByCorreo(identifier));
 
         if (optionalUsuario.isEmpty()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
